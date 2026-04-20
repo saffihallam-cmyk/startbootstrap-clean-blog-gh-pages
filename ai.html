@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guess the Number Game</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    body {
+      background-image: url('assets/img/backimage.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      background-repeat: no-repeat;
+     
+    }
+
+    /* Optional: add a subtle backdrop so text is readable */
+    .game-wrapper {
+      background: rgba(255, 255, 255, 0.85);
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 500px;
+      margin: auto;
+      margin-top: 80px;
+      font-family: Georgia, 'Times New Roman', Times, serif;
+      color: #ac4b06;
+    }
+   
+
+
+    .return-box {
+      background: rgba(255, 255, 255, 0.85);
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 500px;
+      margin: 40px auto;   /* centers it and adds spacing */
+      text-align: center;  /* centers the text */
+      font-size: 1.1rem;margin-top: 20px;
+      font-family: Georgia, 'Times New Roman', Times, serif;
+      color: #ac4b06;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <div class="game-wrapper shadow">
+
+      <h3 class="text-center mb-4">Guess the Number (1–10)</h3>
+
+      <p id="message" class="mb-3">
+        I'm thinking of a number between 1 and 10. Try to guess it!
+      </p>
+    <img id="winGif" 
+     src="assets/img/celebration.gif" 
+     style="display:none; width:100%; border-radius:10px; margin-top:15px;">
+
+
+      <div class="input-group mb-3">
+        <input type="number" id="guessInput" class="form-control" placeholder="Enter your guess">
+        <button id="guessBtn" class="btn btn-primary">Guess</button>
+      </div>
+
+      <button id="resetBtn" class="btn btn-secondary mt-2">Reset Game</button>
+
+    </div>
+  </div>
+
+  <div class="return-box">
+  <p>Finished with the game? Head back to the home page <a href="index.html">here</a>.</p>
+</div>
+
+  <script>
+    let secretNumber = Math.floor(Math.random() * 10) + 1;
+    let guessesLeft = 5;
+    const message = document.getElementById("message");
+    const guessInput = document.getElementById("guessInput");
+    const guessBtn = document.getElementById("guessBtn");
+    const resetBtn = document.getElementById("resetBtn");
+
+    guessBtn.addEventListener("click", () => {
+  const guess = Number(guessInput.value);
+
+  if (!guess || guess < 1 || guess > 10) {
+    message.textContent = "Please enter a number between 1 and 10.";
+    return;
+  }
+
+  guessesLeft--;
+
+  if (guess === secretNumber) {
+    message.textContent = `Correct! The number was ${secretNumber}.`;
+    document.getElementById("winGif").style.display = "block"; // show GIF
+    guessBtn.disabled = true;
+    return;
+  }
+
+  if (guessesLeft === 0) {
+    message.textContent = `Out of guesses! The number was ${secretNumber}.`;
+    guessBtn.disabled = true;
+    return;
+  }
+
+  if (guess < secretNumber) {
+    message.textContent = `Too low. You have ${guessesLeft} guesses left.`;
+  } else {
+    message.textContent = `Too high. You have ${guessesLeft} guesses left.`;
+  }
+});
+
+
+   resetBtn.addEventListener("click", () => {
+  secretNumber = Math.floor(Math.random() * 10) + 1;
+  guessesLeft = 5;
+  message.textContent = "New number generated! Guess again.";
+  guessInput.value = "";
+  guessBtn.disabled = false;
+  document.getElementById("winGif").style.display = "none"; // hide GIF
+});
+
+  </script>
+
+</body>
+
+
+</html>
